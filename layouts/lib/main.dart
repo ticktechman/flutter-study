@@ -12,6 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: "Voltaire",
+        useMaterial3: true,
+      ),
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,7 +35,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -55,71 +62,244 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  var _selected = 0;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    var dec = BoxDecoration(
+      borderRadius: BorderRadius.circular(4),
+      //背景装饰
+      gradient: const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color.fromARGB(221, 33, 33, 33),
+          Color.fromARGB(221, 40, 40, 40)
+        ],
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Color.fromARGB(255, 23, 23, 23).withOpacity(.5),
+          // spreadRadius: 4,
+          blurRadius: 2,
+          offset: Offset(1, 1),
+        ),
+      ],
+    );
+
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        titleTextStyle: TextStyle(fontFamily: "Voltaire", fontSize: 30),
+        backgroundColor: Colors.black87,
+        elevation: 4,
+        shadowColor: Colors.black,
+        foregroundColor: Colors.white,
+        leading: const Icon(Icons.notifications_sharp),
+        // leading: IconButton(onPressed: () {}, icon: const Icon(Icons.camera)),
+        title: const Text("BMW x50"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.directions_bus),
+            padding: EdgeInsets.all(10),
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.greenAccent,
+        unselectedItemColor: Colors.grey,
+        iconSize: 32,
+        selectedFontSize: 20,
+        unselectedFontSize: 18,
+        onTap: (index) {
+          setState(() {
+            _selected = index;
+            print(index);
+          });
+        },
+        currentIndex: _selected,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "HOME",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_enhance),
+            label: "CAMERA",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "SETTINGS",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_outlined),
+            label: "MENU",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: "ABOUT",
+          ),
+        ],
+      ),
+      body: Container(
+        height: double.infinity,
+        alignment: Alignment.topCenter,
+        color: const Color.fromARGB(221, 28, 27, 27),
+        padding: const EdgeInsets.all(8),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Image.asset("lib/asset/bmw.jpeg"),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'Updated from vehicle on 9/20/2003 PM',
+                style: TextStyle(
+                    color: Colors.white, fontFamily: "Voltaire", fontSize: 16),
+              ),
             ),
+            Container(
+              decoration: dec,
+              // color: const Color.fromARGB(221, 28, 27, 27),
+              padding: EdgeInsets.symmetric(vertical: 20),
+              alignment: Alignment.center,
+              width: double.infinity,
+
+              child: const Text(
+                "YOUR FIRST DREAM CAR 😏",
+                style: TextStyle(
+                  color: Color.fromARGB(212, 255, 255, 255),
+                  fontFamily: "Voltaire",
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            SizedBox(height: 8),
+            Container(
+                decoration: dec,
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.directions_bike,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.home_repair_service,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.computer,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.media_bluetooth_off,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.directions_walk,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.directions_bus_sharp,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.directions_railway,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                    SizedBox(width: 40),
+                    Icon(
+                      Icons.directions_boat,
+                      color: Colors.greenAccent,
+                      size: 32,
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 8,
+            ),
+            Flex(
+              direction: Axis.horizontal,
+              children: [
+                Container(
+                  decoration: dec.copyWith(),
+                  width: 400,
+                  height: 210,
+                  padding: EdgeInsets.all(20),
+                  child: const Column(children: [
+                    Text(
+                      "HISTORY",
+                      style: TextStyle(
+                        color: Color.fromARGB(212, 255, 255, 255),
+                        fontFamily: "Voltaire",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Text(
+                      "Flutter transforms the app development process. Build, test, and deploy beautiful mobile, web, desktop, and embedded apps from a single codebase.",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: "Voltaire",
+                        fontSize: 18,
+                      ),
+                    )
+                  ]),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  decoration: dec.copyWith(),
+                  width: 400,
+                  height: 210,
+                  padding: EdgeInsets.all(20),
+                  child: const Column(children: [
+                    Text(
+                      "ABOUT US",
+                      style: TextStyle(
+                        color: Color.fromARGB(212, 255, 255, 255),
+                        fontFamily: "Voltaire",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Text(
+                      "The overall idea with shifting type bottom navigation bars is that each item will have a different background color (that contrasts with white), since that color will become the color of the entire navigation bar, when the item is selected",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: "Voltaire",
+                        fontSize: 18,
+                      ),
+                    )
+                  ]),
+                ),
+              ],
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
