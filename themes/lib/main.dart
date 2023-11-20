@@ -33,6 +33,8 @@ var light = ThemeData(
   useMaterial3: true,
 );
 
+var curTheme = ThemeMode.system;
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      themeMode: ThemeMode.dark,
+      themeMode: curTheme,
       darkTheme: dark,
       theme: light,
       home: const MyHomePage(title: 'DEMO PAGE'),
@@ -80,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-      if (_counter % 2 == 0) {}
     });
   }
 
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         leading: DrawerButton(
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
         ),
         title: Text(widget.title),
@@ -108,14 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
 
-      drawer: Drawer(
-        child: ListView.builder(
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(title: Text("NO {index}"));
-          },
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         // selectedItemColor: Colors.deepPurpleAccent,
@@ -124,14 +117,21 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (idx) {
           setState(() {
             _selected = idx;
+            if (_selected % 2 == 0) {
+              curTheme = ThemeMode.dark;
+            } else {
+              curTheme = ThemeMode.light;
+            }
           });
         },
+        selectedFontSize: 19,
+        unselectedFontSize: 16,
         currentIndex: _selected,
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "AIR"),
-          BottomNavigationBarItem(icon: Icon(Icons.car_rental), label: "AIR"),
-          BottomNavigationBarItem(icon: Icon(Icons.house), label: "AIR"),
-          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: "AIR"),
+          BottomNavigationBarItem(icon: Icon(Icons.car_rental), label: "CAR"),
+          BottomNavigationBarItem(icon: Icon(Icons.house), label: "HOUSE"),
+          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: "CLOUD"),
         ],
       ),
       body: Center(
