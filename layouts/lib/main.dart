@@ -143,161 +143,169 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Container(
-        height: double.infinity,
-        alignment: Alignment.topCenter,
-        color: const Color.fromARGB(221, 28, 27, 27),
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: Image.asset("lib/asset/bmw.jpeg"),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Updated from vehicle on 9/20/2003 PM',
-                style: TextStyle(
-                    color: Colors.white, fontFamily: "Voltaire", fontSize: 16),
+      body: SingleChildScrollView(
+        child: Container(
+          // height: double.infinity,
+          alignment: Alignment.topCenter,
+          color: const Color.fromARGB(221, 28, 27, 27),
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset("lib/asset/bmw.jpeg"),
               ),
-            ),
-            Container(
-              decoration: dec,
-              // color: const Color.fromARGB(221, 28, 27, 27),
-              padding: EdgeInsets.symmetric(vertical: 20),
-              alignment: Alignment.center,
-              width: double.infinity,
-
-              child: const Text(
-                "YOUR FIRST DREAM CAR 😏",
-                style: TextStyle(
-                  color: Color.fromARGB(212, 255, 255, 255),
-                  fontFamily: "Voltaire",
-                  fontSize: 25,
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Updated from vehicle on 9/20/2003 PM',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "Voltaire",
+                      fontSize: 16),
                 ),
               ),
-            ),
-            SizedBox(height: 8),
-            Container(
+              Container(
                 decoration: dec,
+                // color: const Color.fromARGB(221, 28, 27, 27),
+                padding: EdgeInsets.symmetric(vertical: 20),
+                alignment: Alignment.center,
                 width: double.infinity,
-                padding: EdgeInsets.all(20),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.directions_bike,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.home_repair_service,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.computer,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.media_bluetooth_off,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.directions_walk,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.directions_bus_sharp,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.directions_railway,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                    SizedBox(width: 40),
-                    Icon(
-                      Icons.directions_boat,
-                      color: Colors.greenAccent,
-                      size: 32,
-                    ),
-                  ],
-                )),
-            SizedBox(
-              height: 8,
-            ),
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Container(
-                  decoration: dec.copyWith(),
-                  width: 400,
-                  height: 210,
+
+                child: const Text(
+                  "YOUR FIRST DREAM CAR 😏",
+                  style: TextStyle(
+                    color: Color.fromARGB(212, 255, 255, 255),
+                    fontFamily: "Voltaire",
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                  decoration: dec,
+                  // width: double.infinity,
                   padding: EdgeInsets.all(20),
-                  child: const Column(children: [
-                    Text(
-                      "HISTORY",
-                      style: TextStyle(
-                        color: Color.fromARGB(212, 255, 255, 255),
-                        fontFamily: "Voltaire",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.directions_bike,
+                        color: Colors.greenAccent,
+                        size: 32,
                       ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.home_repair_service,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.computer,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.media_bluetooth_off,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.directions_walk,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.directions_bus_sharp,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.directions_railway,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                      SizedBox(width: 40),
+                      Icon(
+                        Icons.directions_boat,
+                        color: Colors.greenAccent,
+                        size: 32,
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: dec,
+                      // width: 400,
+                      // height: double.maxFinite,
+                      padding: EdgeInsets.all(20),
+                      child: const Column(children: [
+                        Text(
+                          "HISTORY",
+                          style: TextStyle(
+                            color: Color.fromARGB(212, 255, 255, 255),
+                            fontFamily: "Voltaire",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text(
+                          "Flutter transforms the app development process. Build, test, and deploy beautiful mobile, web, desktop, and embedded apps from a single codebase.",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: "Voltaire",
+                            fontSize: 18,
+                          ),
+                        )
+                      ]),
                     ),
-                    Text(
-                      "Flutter transforms the app development process. Build, test, and deploy beautiful mobile, web, desktop, and embedded apps from a single codebase.",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontFamily: "Voltaire",
-                        fontSize: 18,
-                      ),
-                    )
-                  ]),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  decoration: dec.copyWith(),
-                  width: 400,
-                  height: 210,
-                  padding: EdgeInsets.all(20),
-                  child: const Column(children: [
-                    Text(
-                      "ABOUT US",
-                      style: TextStyle(
-                        color: Color.fromARGB(212, 255, 255, 255),
-                        fontFamily: "Voltaire",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: dec,
+                      // width: 400,
+                      // height: double.maxFinite,
+                      padding: EdgeInsets.all(20),
+                      child: const Column(children: [
+                        Text(
+                          "ABOUT US",
+                          style: TextStyle(
+                            color: Color.fromARGB(212, 255, 255, 255),
+                            fontFamily: "Voltaire",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text(
+                          "The overall idea with shifting type bottom navigation bars is that each item will have a different background color (that contrasts with white), since that color will become the color of the entire navigation bar, when the item is selected",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: "Voltaire",
+                            fontSize: 18,
+                          ),
+                        )
+                      ]),
                     ),
-                    Text(
-                      "The overall idea with shifting type bottom navigation bars is that each item will have a different background color (that contrasts with white), since that color will become the color of the entire navigation bar, when the item is selected",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontFamily: "Voltaire",
-                        fontSize: 18,
-                      ),
-                    )
-                  ]),
-                ),
-              ],
-            )
-          ],
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
