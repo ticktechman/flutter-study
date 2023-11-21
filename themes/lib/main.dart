@@ -49,6 +49,12 @@ var light = ThemeData(
     primary: Colors.blue,
     secondary: Colors.blue,
     tertiary: Colors.blue,
+    // onPrimaryContainer: Colors.black12,
+    onSurface: const Color.fromARGB(192, 0, 0, 0),
+    onSecondaryContainer: Colors.grey.shade100,
+    background: Colors.grey.shade100,
+    onBackground: Colors.grey.shade800,
+    outline: Colors.grey.shade300,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -68,7 +74,7 @@ var light = ThemeData(
   useMaterial3: true,
 );
 
-var curTheme = ThemeMode.light;
+var curTheme = ThemeMode.dark;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -211,21 +217,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.dark,
                   icon: Icon(Icons.dark_mode_outlined),
+                  tooltip: 'dark',
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.light,
-                  icon: Icon(Icons.light_mode_outlined),
+                  icon: Icon(
+                    Icons.light_mode_outlined,
+                  ),
+                  tooltip: 'light',
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.system,
                   icon: Icon(Icons.auto_mode),
+                  tooltip: 'system',
                 )
               ],
               selected: selections,
               onSelectionChanged: (newselected) {
                 setState(() {
                   selections = newselected;
-                  print(newselected);
                 });
               },
               multiSelectionEnabled: false,
