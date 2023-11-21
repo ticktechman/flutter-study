@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,6 +75,18 @@ var light = ThemeData(
   useMaterial3: true,
 );
 
+class AppSettings with ChangeNotifier {
+  var _theme = ThemeMode.light;
+  ThemeMode get theme {
+    return _theme;
+  }
+
+  set theme(t) {
+    _theme = t;
+    notifyListeners();
+  }
+}
+
 var curTheme = ThemeMode.dark;
 
 class MyApp extends StatelessWidget {
@@ -81,16 +94,20 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      themeMode: curTheme,
-      darkTheme: dark,
-      theme: light,
-      home: const MyHomePage(title: 'DEMO PAGE'),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => AppSettings(),
+        builder: (context, child) {
+          var savedTheme = Provider.of<AppSettings>(context).theme;
+          return MaterialApp(
+            title: 'Flutter Demo',
+            themeMode: savedTheme,
+            darkTheme: dark,
+            theme: light,
+            home: const MyHomePage(title: 'DEMO PAGE'),
+            debugShowCheckedModeBanner: false,
+          );
+        },
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -237,6 +254,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   selections = newselected;
                 });
+                var setting = Provider.of<AppSettings>(context, listen: false);
+                setting.theme = newselected.first;
               },
               multiSelectionEnabled: false,
             )
