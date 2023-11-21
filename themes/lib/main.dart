@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -72,6 +73,7 @@ var light = ThemeData(
       ),
     ),
   ),
+  dividerTheme: DividerThemeData(color: Colors.grey.shade300),
   useMaterial3: true,
 );
 
@@ -86,8 +88,6 @@ class AppSettings with ChangeNotifier {
     notifyListeners();
   }
 }
-
-var curTheme = ThemeMode.dark;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -129,30 +129,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _selected = 0;
-  Set<ThemeMode> selections = <ThemeMode>{ThemeMode.dark};
+  Set<ThemeMode> selections = <ThemeMode>{ThemeMode.light};
+  bool cbvalue1 = false;
+  bool cbvalue2 = false;
+  bool allselect = false;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  List<String> partions = ["/", "/home", "/opt", "/root"];
+  List<bool> checked = [];
+  @override
+  void initState() {
+    super.initState();
+    checked = List<bool>.generate(partions.length, (i) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-
     return Scaffold(
       appBar: AppBar(
         leading: DrawerButton(
@@ -178,11 +170,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (idx) {
           setState(() {
             _selected = idx;
-            if (_selected % 2 == 0) {
-              curTheme = ThemeMode.dark;
-            } else {
-              curTheme = ThemeMode.light;
-            }
           });
         },
         selectedFontSize: 19,
@@ -214,39 +201,89 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
             ElevatedButton(
               onPressed: () {},
               child: Text('BUTTON'),
             ),
-            SizedBox(
-              height: 20,
+            SizedBox(height: 20),
+            LinearPercentIndicator(
+              percent: 0.5,
+              barRadius: const Radius.circular(2.5),
+              progressColor: Colors.blue,
             ),
+            Column(
+              children: [
+                CheckboxListTile(
+                  title: Text("ALL"),
+                  value: allselect,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (b) {
+                    setState(() {
+                      allselect = b!;
+                      for (var i = 0; i < checked.length; i++) {
+                        checked[i] = allselect;
+                      }
+                    });
+                  },
+                ),
+                Divider(),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 200),
+                  child: ListView.builder(
+                    itemCount: partions.length,
+                    itemBuilder: (context, idx) {
+                      return CheckboxListTile(
+                        title: Text(partions[idx]),
+                        value: checked[idx],
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (b) {
+                          setState(() {
+                            checked[idx] = b!;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            DropdownMenu<String>(
+              initialSelection: "en",
+              onSelected: (str) {
+                print(str);
+              },
+              dropdownMenuEntries: [
+                DropdownMenuEntry<String>(
+                  value: "en",
+                  label: "English",
+                ),
+                DropdownMenuEntry<String>(
+                  value: "zh",
+                  label: "简体中文",
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
             SegmentedButton<ThemeMode>(
               showSelectedIcon: false,
               segments: const [
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.dark,
                   icon: Icon(Icons.dark_mode_outlined),
-                  tooltip: 'dark',
+                  tooltip: 'DARK',
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.light,
                   icon: Icon(
                     Icons.light_mode_outlined,
                   ),
-                  tooltip: 'light',
+                  tooltip: 'LIGHT',
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.system,
                   icon: Icon(Icons.auto_mode),
-                  tooltip: 'system',
+                  tooltip: 'SYSTEM',
                 )
               ],
               selected: selections,
