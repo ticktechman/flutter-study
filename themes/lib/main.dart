@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,13 +9,32 @@ var dark = ThemeData(
   brightness: Brightness.dark,
   fontFamily: "Voltaire",
   appBarTheme: AppBarTheme(
+    backgroundColor: Colors.black,
     elevation: 4,
     shadowColor: Colors.black,
   ),
-  colorScheme: ColorScheme.dark(
-    background: Colors.grey[900]!,
-    primary: Colors.white10!,
-    secondary: Colors.lightBlueAccent!,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.black87,
+    brightness: Brightness.dark,
+    primary: Colors.white,
+    secondary: Colors.white,
+    tertiary: Colors.white,
+    // tertiary: Colors.white,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+    ),
+  ),
+  segmentedButtonTheme: SegmentedButtonThemeData(
+    style: ButtonStyle(
+      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
+        EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      ),
+    ),
   ),
 );
 
@@ -22,18 +42,33 @@ var light = ThemeData(
   brightness: Brightness.light,
   fontFamily: "Voltaire",
   appBarTheme: AppBarTheme(
-    // backgroundColor: Colors.lightBlueAccent,
     elevation: 4,
     shadowColor: Colors.black,
   ),
   colorScheme: ColorScheme.light(
     primary: Colors.blue,
-    secondary: Colors.blueAccent,
+    secondary: Colors.blue,
+    tertiary: Colors.blue,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+    ),
+  ),
+  segmentedButtonTheme: SegmentedButtonThemeData(
+    style: ButtonStyle(
+      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
+        EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      ),
+    ),
   ),
   useMaterial3: true,
 );
 
-var curTheme = ThemeMode.system;
+var curTheme = ThemeMode.light;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -73,6 +108,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int _selected = 0;
+  Set<ThemeMode> selections = <ThemeMode>{ThemeMode.dark};
 
   void _incrementCounter() {
     setState(() {
@@ -93,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
         leading: DrawerButton(
@@ -105,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.exit_to_app),
+            style: Theme.of(context).elevatedButtonTheme.style,
           )
         ],
       ),
@@ -160,6 +198,38 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('BUTTON'),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SegmentedButton<ThemeMode>(
+              showSelectedIcon: false,
+              segments: const [
+                ButtonSegment<ThemeMode>(
+                  value: ThemeMode.dark,
+                  icon: Icon(Icons.dark_mode_outlined),
+                ),
+                ButtonSegment<ThemeMode>(
+                  value: ThemeMode.light,
+                  icon: Icon(Icons.light_mode_outlined),
+                ),
+                ButtonSegment<ThemeMode>(
+                  value: ThemeMode.system,
+                  icon: Icon(Icons.auto_mode),
+                )
+              ],
+              selected: selections,
+              onSelectionChanged: (newselected) {
+                setState(() {
+                  selections = newselected;
+                  print(newselected);
+                });
+              },
+              multiSelectionEnabled: false,
+            )
           ],
         ),
       ),
