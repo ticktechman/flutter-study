@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -89,6 +91,15 @@ class AppSettings with ChangeNotifier {
   }
 }
 
+class Percentages with ChangeNotifier {
+  double _val = 0;
+  double get val => _val;
+  set val(v) {
+    _val = v;
+    notifyListeners();
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -134,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool cbvalue1 = false;
   bool cbvalue2 = false;
   bool allselect = false;
+  double curPos = 0;
 
   List<String> partions = ["/", "/home", "/opt", "/root"];
   List<bool> checked = [];
@@ -161,7 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         // selectedItemColor: Colors.deepPurpleAccent,
@@ -185,118 +196,141 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('BUTTON'),
-            ),
-            SizedBox(height: 20),
-            LinearPercentIndicator(
-              percent: 0.5,
-              barRadius: const Radius.circular(2.5),
-              progressColor: Colors.blue,
-            ),
-            Column(
-              children: [
-                CheckboxListTile(
-                  title: Text("ALL"),
-                  value: allselect,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  onChanged: (b) {
-                    setState(() {
-                      allselect = b!;
-                      for (var i = 0; i < checked.length; i++) {
-                        checked[i] = allselect;
-                      }
-                    });
-                  },
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => Percentages())
+          ],
+          builder: (context, child) => Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            //
+            // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+            // action in the IDE, or press "p" in the console), to see the
+            // wireframe for each widget.
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {},
+                child: Text('BUTTON'),
+              ),
+              SizedBox(height: 20),
+              Consumer<Percentages>(
+                builder: (context, val, _) => LinearPercentIndicator(
+                  percent: val.val / 100,
+                  barRadius: const Radius.circular(2.5),
+                  progressColor: Colors.blue,
                 ),
-                Divider(),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 200),
-                  child: ListView.builder(
-                    itemCount: partions.length,
-                    itemBuilder: (context, idx) {
-                      return CheckboxListTile(
-                        title: Text(partions[idx]),
-                        value: checked[idx],
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (b) {
-                          setState(() {
-                            checked[idx] = b!;
-                          });
-                        },
-                      );
+              ),
+              SizedBox(height: 20),
+              Slider(
+                value: curPos,
+                max: 100.0,
+                label: curPos.floor().toString(),
+                divisions: 50,
+                secondaryActiveColor: Colors.amber,
+                onChanged: (val) {
+                  setState(() {
+                    curPos = val;
+                  });
+                  var p = Provider.of<Percentages>(context, listen: false);
+                  p.val = val;
+                },
+              ),
+              Column(
+                children: [
+                  CheckboxListTile(
+                    title: Text("ALL"),
+                    value: allselect,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (b) {
+                      setState(() {
+                        allselect = b!;
+                        for (var i = 0; i < checked.length; i++) {
+                          checked[i] = allselect;
+                        }
+                      });
                     },
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            DropdownMenu<String>(
-              initialSelection: "en",
-              onSelected: (str) {
-                print(str);
-              },
-              dropdownMenuEntries: [
-                DropdownMenuEntry<String>(
-                  value: "en",
-                  label: "English",
-                ),
-                DropdownMenuEntry<String>(
-                  value: "zh",
-                  label: "简体中文",
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            SegmentedButton<ThemeMode>(
-              showSelectedIcon: false,
-              segments: const [
-                ButtonSegment<ThemeMode>(
-                  value: ThemeMode.dark,
-                  icon: Icon(Icons.dark_mode_outlined),
-                  tooltip: 'DARK',
-                ),
-                ButtonSegment<ThemeMode>(
-                  value: ThemeMode.light,
-                  icon: Icon(
-                    Icons.light_mode_outlined,
+                  Divider(),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 200),
+                    child: ListView.builder(
+                      itemCount: partions.length,
+                      itemBuilder: (context, idx) {
+                        return CheckboxListTile(
+                          title: Text(partions[idx]),
+                          value: checked[idx],
+                          controlAffinity: ListTileControlAffinity.leading,
+                          onChanged: (b) {
+                            setState(() {
+                              checked[idx] = b!;
+                            });
+                          },
+                        );
+                      },
+                    ),
                   ),
-                  tooltip: 'LIGHT',
-                ),
-                ButtonSegment<ThemeMode>(
-                  value: ThemeMode.system,
-                  icon: Icon(Icons.auto_mode),
-                  tooltip: 'SYSTEM',
-                )
-              ],
-              selected: selections,
-              onSelectionChanged: (newselected) {
-                setState(() {
-                  selections = newselected;
-                });
-                var setting = Provider.of<AppSettings>(context, listen: false);
-                setting.theme = newselected.first;
-              },
-              multiSelectionEnabled: false,
-            )
-          ],
+                ],
+              ),
+              SizedBox(height: 20),
+              DropdownMenu<String>(
+                initialSelection: "en",
+                onSelected: (str) {
+                  print(str);
+                },
+                dropdownMenuEntries: [
+                  DropdownMenuEntry<String>(
+                    value: "en",
+                    label: "English",
+                  ),
+                  DropdownMenuEntry<String>(
+                    value: "zh",
+                    label: "简体中文",
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              SegmentedButton<ThemeMode>(
+                showSelectedIcon: false,
+                segments: const [
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.dark,
+                    icon: Icon(Icons.dark_mode_outlined),
+                    tooltip: 'DARK',
+                  ),
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.light,
+                    icon: Icon(
+                      Icons.light_mode_outlined,
+                    ),
+                    tooltip: 'LIGHT',
+                  ),
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.system,
+                    icon: Icon(Icons.auto_mode),
+                    tooltip: 'SYSTEM',
+                  )
+                ],
+                selected: selections,
+                onSelectionChanged: (newselected) {
+                  setState(() {
+                    selections = newselected;
+                  });
+                  var setting =
+                      Provider.of<AppSettings>(context, listen: false);
+                  setting.theme = newselected.first;
+                },
+                multiSelectionEnabled: false,
+              )
+            ],
+          ),
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
