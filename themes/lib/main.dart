@@ -10,37 +10,41 @@ void main() {
 }
 
 var dark = ThemeData(
-  brightness: Brightness.dark,
-  fontFamily: "Voltaire",
-  appBarTheme: AppBarTheme(
-    backgroundColor: Colors.black,
-    elevation: 4,
-    shadowColor: Colors.black,
-  ),
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.black87,
     brightness: Brightness.dark,
-    primary: Colors.white,
-    secondary: Colors.white,
-    tertiary: Colors.white,
-    // tertiary: Colors.white,
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+    fontFamily: "Voltaire",
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.black,
+      elevation: 4,
+      shadowColor: Colors.black,
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.black87,
+      brightness: Brightness.dark,
+      primary: Colors.white,
+      secondary: Colors.white,
+      tertiary: Colors.white,
+      // tertiary: Colors.white,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
       ),
     ),
-  ),
-  segmentedButtonTheme: SegmentedButtonThemeData(
-    style: ButtonStyle(
-      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
-        EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
+          EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        ),
       ),
     ),
-  ),
-);
+    sliderTheme: SliderThemeData(
+      showValueIndicator: ShowValueIndicator.always,
+      activeTrackColor: Colors.blue,
+      thumbColor: Colors.blue,
+    ));
 
 var light = ThemeData(
   brightness: Brightness.light,
@@ -233,7 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: curPos,
                 max: 100.0,
                 label: curPos.floor().toString(),
-                divisions: 50,
+                // divisions: 50,
                 secondaryActiveColor: Colors.amber,
                 onChanged: (val) {
                   setState(() {
