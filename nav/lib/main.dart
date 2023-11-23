@@ -56,7 +56,18 @@ class MyApp extends StatelessWidget {
                 },
               ),
             ],
-          )
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/d',
+                routes: [dummy_route],
+                builder: (context, state) {
+                  return Column(children: [Text("D page"), Container(height: 100, color: Colors.grey)]);
+                },
+              ),
+            ],
+          ),
         ],
       ),
     ],
@@ -100,8 +111,9 @@ class MyHomePage extends StatelessWidget {
       body: navshell,
       selectedIndex: navshell.currentIndex,
       destinations: const [
-        AdaptiveScaffoldDestination(title: 'HOME', icon: Icons.home),
-        AdaptiveScaffoldDestination(title: 'ALARM', icon: Icons.alarm),
+        AdaptiveScaffoldDestination(title: 'ERASE', icon: Icons.safety_check),
+        AdaptiveScaffoldDestination(title: 'HISTORY', icon: Icons.history),
+        AdaptiveScaffoldDestination(title: 'SETTINGS', icon: Icons.settings_suggest),
         AdaptiveScaffoldDestination(title: 'ABOUT', icon: Icons.info),
       ],
       onDestinationSelected: (idx) {
